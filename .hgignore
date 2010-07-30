@@ -1,0 +1,4 @@
+syntax: glob
+
+places.egg-info/**
+*.pyc

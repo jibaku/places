@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.db import models
+from django.contrib.gis.db import models
 from django.contrib.sites.models import Site
 from django.conf import settings
 
@@ -9,6 +9,7 @@ class Place(models.Model):
     slug = models.SlugField()
     longitude = models.FloatField(blank=True)
     latitude = models.FloatField(blank=True)
+    position = models.PointField(srid=4326, blank=True, null=True)
     
     street = models.CharField(blank=True, max_length=250)
     postal_code = models.CharField(blank=True, max_length=25)

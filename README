@@ -1,0 +1,1 @@
+"places" is a django app (using geodjango) that allow you to manage geo-localized places.

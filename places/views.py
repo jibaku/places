@@ -3,7 +3,7 @@ from places.models import Place
 from django.conf import settings
 
 def place_list(request):
-    queryset = Place.objects.filter(site__id=settings.SITE_ID)
+    queryset = Place.objects.filter(site__id=settings.SITE_ID).filter(is_public=True)
     return object_list(request, queryset=queryset)
 
 def place_detail(request, place_slug):

@@ -20,7 +20,6 @@ class PlacesNode(template.Node):
         context[self.var_name] = Place.objects.filter(site__id=settings.SITE_ID).order_by('name')
         return ''
 
-
 @register.tag(name="places_filter")
 def places_filter(parser, token):
     """
@@ -45,3 +44,12 @@ def places_filter(parser, token):
         raise template.TemplateSyntaxError, "%r tag must be used with %s" % (tokens[0], "{% categories as categories %}")
     else:    
         return PlacesNode(var_name, filters)
+
+@register.inclusion_tag('places/inclusion_tag/staticmap.html')
+def staticmap(latitude, longitude, height, width):
+    return {
+        'lat':latitude,
+        'long':longitude,
+        'height':height,
+        'width':width,
+    }

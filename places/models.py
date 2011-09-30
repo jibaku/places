@@ -42,6 +42,7 @@ class Place(models.Model):
         """
         Updating latitude/longitude when position is updated
         """
-        self.latitude = self.position.x
-        self.longitude = self.position.y
+        if self.position:
+            self.latitude = self.position.x
+            self.longitude = self.position.y
         super(Place, self).save(*args, **kwargs)

@@ -23,8 +23,8 @@ class Place(models.Model):
     
     description = models.TextField(blank=True)
 
-    #added_on = models.DateTimeField(default=datetime.datetime.now, editable=False)
-    #updated_on = models.DateTimeField(editable=False)
+    added_on = models.DateTimeField(default=datetime.datetime.now, editable=False)
+    updated_on = models.DateTimeField(editable=False)
 
     class Meta:
         unique_together = (
@@ -45,4 +45,5 @@ class Place(models.Model):
         if self.position:
             self.latitude = self.position.x
             self.longitude = self.position.y
+        self.updated_on = datetime.datetime.now()
         super(Place, self).save(*args, **kwargs)

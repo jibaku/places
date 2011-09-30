@@ -23,6 +23,7 @@
             var point = {{ name }}_marker.getPosition();
             $('#id_{{ name }}')[0].value = "POINT(" + point.lng() + " " + point.lat() + ")";
         });
+        {% if allow_bigger %}
         $('#max_{{ name }}').click(function (event){
             event.preventDefault();
             var center = map.getCenter();
@@ -39,6 +40,7 @@
             google.maps.event.trigger(map, 'resize');  
             map.setCenter(center);
         });
+        {% endif %}
         
     });
 </script>

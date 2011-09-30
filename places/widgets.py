@@ -2,8 +2,9 @@ from django import forms
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.contrib.gis.geos import Point
+from django.conf import settings
 
-DEFAULT_POINT = Point(7,47)
+DEFAULT_POINT = (7,47)
 MINIMIZED_MAPS_HEIGHT = 300
 MINIMIZED_MAPS_WIDTH = 400
 MAXIMIZED_MAPS_HEIGHT = 600
@@ -17,11 +18,18 @@ class GoogleMapPointWidget(forms.widgets.Widget):
         )
     def __init__(self, *args, **kw):
         super(GoogleMapPointWidget, self).__init__(*args, **kw)
+        self.allow_bigger = True
+        try:
+            self.allow_bigger = kw['attrs']['allow_bigger']
+        except KeyError:
+            pass
+        
         self.hidden_input = forms.widgets.HiddenInput()
         
     def render(self, name, value, *args, **kwargs):
-        if value is None:
-            value = DEFAULT_POINT
+
+        if value is None or (value is not None and len(value) == 0):
+            value = Point(getattr(settings, 'DEFAULT_POINT', DEFAULT_POINT))
             zoom_level = 8
         else:
             zoom_level = 12
@@ -30,6 +38,7 @@ class GoogleMapPointWidget(forms.widgets.Widget):
             'zoom_level':zoom_level,
             'point':value,
             'name':name,
+            'allow_bigger':self.allow_bigger,
             'min_width':MINIMIZED_MAPS_WIDTH,
             'min_height':MINIMIZED_MAPS_HEIGHT,
             'max_width':MAXIMIZED_MAPS_WIDTH,
@@ -39,8 +48,9 @@ class GoogleMapPointWidget(forms.widgets.Widget):
         javascript = render_to_string('places/javascript/point_gmap.js', context)
         
         html = self.hidden_input.render("%s" % name, None, dict(id='id_%s' % name))
-        html += "<button id='min_%s'>-</button>" % name
-        html += "<button id='max_%s'>+</button><br/>" % name
+        if self.allow_bigger:
+            html += "<button id='min_%s'>-</button>" % name
+            html += "<button id='max_%s'>+</button><br/>" % name
         map_options = {
             'name':name,
             'min_width':MINIMIZED_MAPS_WIDTH,

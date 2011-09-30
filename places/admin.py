@@ -7,7 +7,7 @@ from places.models import Place
 from places.widgets import GoogleMapPointWidget
 
 class PlaceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'position', 'is_public', 'city')
+    list_display = ('name', 'position', 'is_public', 'city', 'added_on', 'updated_on')
     list_filter = ('site', 'is_public')
     prepopulated_fields = {"slug": ("name",)}
     search_fields = ('name','description',)

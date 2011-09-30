@@ -2,13 +2,14 @@ from django import forms
 from django.template.defaultfilters import slugify
 
 from places.models import Place
-
+from places.widgets import GoogleMapPointWidget
 class AddPlaceForm(forms.ModelForm):
 	class Meta:
 		model = Place
 		fields = ('name','position', 'is_public', 'description', 'site')
 		widgets = {
             'site': forms.HiddenInput(),
+            'position': GoogleMapPointWidget(attrs={'allow_bigger':False}),
         }
 	
 	def clean(self):

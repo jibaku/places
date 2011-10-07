@@ -18,16 +18,16 @@ class GoogleMapPointWidget(forms.widgets.Widget):
         )
     def __init__(self, *args, **kw):
         super(GoogleMapPointWidget, self).__init__(*args, **kw)
-        self.allow_bigger = True
-        try:
-            self.allow_bigger = kw['attrs']['allow_bigger']
-        except KeyError:
-            pass
+        # default conf
+        self.config = {
+            'allow_bigger': True,
+        }
+        # updating with user input
+        self.config.update(kw['attrs'])
         
         self.hidden_input = forms.widgets.HiddenInput()
         
     def render(self, name, value, *args, **kwargs):
-
         if value is None or (value is not None and len(value) == 0):
             value = Point(getattr(settings, 'DEFAULT_POINT', DEFAULT_POINT))
             zoom_level = 8
@@ -38,7 +38,7 @@ class GoogleMapPointWidget(forms.widgets.Widget):
             'zoom_level':zoom_level,
             'point':value,
             'name':name,
-            'allow_bigger':self.allow_bigger,
+            'allow_bigger':self.config['allow_bigger'],
             'min_width':MINIMIZED_MAPS_WIDTH,
             'min_height':MINIMIZED_MAPS_HEIGHT,
             'max_width':MAXIMIZED_MAPS_WIDTH,
@@ -48,7 +48,7 @@ class GoogleMapPointWidget(forms.widgets.Widget):
         javascript = render_to_string('places/javascript/point_gmap.js', context)
         
         html = self.hidden_input.render("%s" % name, None, dict(id='id_%s' % name))
-        if self.allow_bigger:
+        if self.config['allow_bigger']:
             html += "<button id='min_%s'>-</button>" % name
             html += "<button id='max_%s'>+</button><br/>" % name
         map_options = {

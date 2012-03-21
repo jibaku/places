@@ -3,6 +3,7 @@ from django.template.defaultfilters import slugify
 
 from places.models import Place
 from places.widgets import GoogleMapPointWidget
+
 class AddPlaceForm(forms.ModelForm):
 	class Meta:
 		model = Place

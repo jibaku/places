@@ -1,3 +1,4 @@
+#! -*- encoding: utf-8 -*-
 from django import forms
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
@@ -23,7 +24,10 @@ class GoogleMapPointWidget(forms.widgets.Widget):
             'allow_bigger': True,
         }
         # updating with user input
-        self.config.update(kw['attrs'])
+        try:
+            self.config.update(kw['attrs'])
+        except KeyError:
+            pass
         
         self.hidden_input = forms.widgets.HiddenInput()
         

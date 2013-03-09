@@ -8,8 +8,9 @@ from places.widgets import GoogleMapPointWidget
 
 
 class PlaceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'position', 'is_public', 'city', 'added_on', 'updated_on')
-    list_filter = ('site', 'is_public')
+    list_display = ('name', 'position', 'is_public', 'user', 'city', 'added_on', 'updated_on')
+    list_filter = ('site', 'is_public', 'added_on')
+    date_hierarchy = ('added_on')
     prepopulated_fields = {"slug": ("name",)}
     search_fields = ('name', 'description',)
     formfield_overrides = {

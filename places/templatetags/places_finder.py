@@ -11,6 +11,7 @@ register = template.Library()
 
 from places.models import Place
 
+
 class PlacesNode(template.Node):
     def __init__(self, var_name, filters):
         self.var_name = var_name
@@ -19,6 +20,7 @@ class PlacesNode(template.Node):
     def render(self, context):
         context[self.var_name] = Place.objects.filter(site__id=settings.SITE_ID).order_by('name')
         return ''
+
 
 @register.tag(name="places_filter")
 def places_filter(parser, token):
@@ -39,17 +41,31 @@ def places_filter(parser, token):
             filters = None
         else:
             raise_error = True
-    
+
     if raise_error:
         raise template.TemplateSyntaxError, "%r tag must be used with %s" % (tokens[0], "{% categories as categories %}")
-    else:    
+    else:
         return PlacesNode(var_name, filters)
 
+
 @register.inclusion_tag('places/inclusion_tag/staticmap.html')
-def staticmap(latitude, longitude, height, width):
+def staticmap(latitude, longitude, html_size="200x500"):
+    try:
+        height, width = html_size.split("x")
+        height, width = int(height), int(width)
+    except ValueError:
+        err = 'staticmap third attribute must be in the form WIDTHxHEIGHT'
+        err += '(like "300x400")'
+        raise template.TemplateSyntaxError(err)
+
     return {
-        'lat':latitude,
-        'long':longitude,
-        'height':height,
-        'width':width,
+        'lat': latitude,
+        'long': longitude,
+        'height': height,
+        'width': width,
     }
+
+
+@register.simple_tag
+def user_places_count(user):
+    return Place.objects.filter(user=user).count()

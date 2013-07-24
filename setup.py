@@ -1,16 +1,17 @@
 from distutils.core import setup
- 
+
+
 setup(
-    name = "places",
-    version = "0.1",
-    author = "Fabien Schwob",
-    author_email = "fabien@x-phuture.com",
-    license = "BSD",
-    url = "http://bitbucket.org/jibaku/places",
-    packages = [
+    name="places",
+    version="0.1",
+    author="Fabien Schwob",
+    author_email="fabien@x-phuture.com",
+    license="BSD",
+    url="https://github.com/jibaku/places",
+    packages=[
         "places",
     ],
-    classifiers = [
+    classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",

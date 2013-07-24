@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
-
-import re
-
 from django import template
-from django.core.cache import cache
-from django.core.urlresolvers import reverse
 from django.conf import settings
 
-register = template.Library()
-
 from places.models import Place
+
+register = template.Library()
 
 
 class PlacesNode(template.Node):

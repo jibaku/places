@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-06 15:05+0100\n"
+"POT-Creation-Date: 2013-07-25 01:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,50 +18,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: models.py:13
+#: admin.py:24
+msgid "Mark as public"
+msgstr "Marquer comme public"
+
+#: admin.py:28
+msgid "Mark as private"
+msgstr "Marquer comme privé"
+
+#: models.py:16
 msgid "Name"
 msgstr "Nom"
 
-#: models.py:14
+#: models.py:17
 msgid "Slug"
 msgstr "Slug"
 
-#: models.py:16
+#: models.py:19
 msgid "Longitude"
 msgstr "Longitude"
 
-#: models.py:17
+#: models.py:20
 msgid "Latitude"
 msgstr "Latitude"
 
-#: models.py:18
+#: models.py:21
 msgid "Position"
 msgstr "Emplacement"
 
-#: models.py:19
+#: models.py:22
 msgid "Is public?"
 msgstr "Est public ?"
 
-#: models.py:21
+#: models.py:24
 msgid "Street"
 msgstr "Rue"
 
-#: models.py:22
+#: models.py:25
 msgid "Postal code"
 msgstr "Code postal"
 
-#: models.py:23
+#: models.py:26
 msgid "City"
 msgstr "Ville"
 
-#: models.py:25
+#: models.py:28
 msgid "Description"
 msgstr "Description"
 
-#: models.py:34
+#: models.py:39
 msgid "Place"
 msgstr "Lieu"
 
-#: models.py:35
+#: models.py:40
 msgid "Places"
 msgstr "Lieux"

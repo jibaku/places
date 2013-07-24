@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
+from .managers import PlaceManager
+
 
 class Place(models.Model):
     site = models.ForeignKey(Site, default=settings.SITE_ID)
@@ -27,6 +29,8 @@ class Place(models.Model):
 
     added_on = models.DateTimeField(default=datetime.datetime.now, editable=False)
     updated_on = models.DateTimeField(editable=False)
+
+    objects = PlaceManager()
 
     class Meta:
         unique_together = (

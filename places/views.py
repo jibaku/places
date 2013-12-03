@@ -20,12 +20,16 @@ class UserPlaceListView(ListView):
     def get_queryset(self):
         username = self.kwargs.get('username')
         user = get_object_or_404(User, username=username)
-
         if user == self.request.user:
             queryset = Place.objects.for_user(user=user)
         else:
             queryset = Place.objects.user_public_places(user=user)
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(UserPlaceListView, self).get_context_data(**kwargs)
+        context['center'] = self.get_queryset().collect().centroid
+        return context
 
 
 class PlaceDetailView(DetailView):

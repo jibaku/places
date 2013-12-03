@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.conf import settings
 
 
-class PlaceManager(models.Manager):
+class PlaceManager(models.GeoManager):
     def for_site(self, site_id=None):
         if site_id is None:
             site_id = settings.SITE_ID

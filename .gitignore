@@ -1,3 +1,5 @@
 *.pyc
 places.egg-info/**
 docs/_build
+build
+dist

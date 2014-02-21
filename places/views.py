@@ -42,6 +42,15 @@ class PlaceDetailView(DetailView):
             queryset = Place.objects.public()
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super(PlaceDetailView, self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated():
+            nearby = Place.objects.for_user(self.request.user).distance(self.object.position).exclude(id=self.object.id)[:5]
+        else:
+            nearby = Place.objects.public().distance(self.object.position).exclude(id=self.object.id)[:5]
+        context['nearby'] = nearby
+        return context
+        
 
 class PlaceAddView(CreateView):
     template_name = 'places/place_form.html'

@@ -1,7 +1,7 @@
 Welcome to Places's documentation!
 ==================================
 
-"places" is a django app (using geodjango) that allow you to manage geo-localized places.
+**places** is a django app (using geodjango) that allow you to manage geo-localized places.
 
 Contents:
 
@@ -9,6 +9,9 @@ Contents:
    :maxdepth: 2
 
    installation
+   views
+   managers
+
 
 
 Indices and tables

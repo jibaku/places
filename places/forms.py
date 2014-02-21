@@ -11,7 +11,7 @@ class AddPlaceForm(forms.ModelForm):
         fields = ('name', 'position', 'city', 'is_public', 'description', 'site')
         widgets = {
             'site': forms.HiddenInput(),
-            'position': GoogleMapPointWidget(attrs={'allow_bigger': False}),
+            'position': GoogleMapPointWidget(attrs={'allow_bigger': False, 'min_width': 850, 'min_height': 250}),
         }
 
     def clean(self):

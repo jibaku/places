@@ -11,7 +11,9 @@
             center: new google.maps.LatLng({{ point.y }}, {{ point.x }}),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
-
+    {% comment %}
+        
+    
         var {{ name }}_marker = new google.maps.Marker({
             position:new google.maps.LatLng({{ point.y }}, {{ point.x }}),
             map: map,
@@ -23,6 +25,7 @@
             var point = {{ name }}_marker.getPosition();
             $('#id_{{ name }}')[0].value = "POINT(" + point.lng() + " " + point.lat() + ")";
         });
+        {% endcomment %}
         {% if allow_bigger %}
         $('#max_{{ name }}').click(function (event){
             event.preventDefault();
@@ -41,7 +44,23 @@
             map.setCenter(center);
         });
         {% endif %}
-        
+        var marker;
+
+        function placeMarker(location) {
+          if ( marker ) {
+            marker.setPosition(location);
+          } else {
+            marker = new google.maps.Marker({
+              position: location,
+              map: map
+            });
+            $('#id_{{ name }}')[0].value = "POINT(" + location.lng() + " " + location.lat() + ")";
+          }
+        }
+
+        google.maps.event.addListener(map, 'click', function(event) {
+          placeMarker(event.latLng);
+        });
     });
 </script>
 {% endlocalize %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load i18n l10n places_finder crispy_forms_tags %}
+
+{% block title %}Ajouter un lieu{% endblock title %}
+
+{% block extra_head %}
+{{ form.media }}
+{% endblock extra_head %}
+
+{% block menu_spots %}class="active"{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>
+    Spots
+    <small>Ajouter un lieu</small>
+  </h1>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <form action="" method="post" id="contactform">{% csrf_token %}
+
+        	<p class="no-border"><strong>Quelques informations à fournir pour votre nouveau lieu</strong></p>
+        	
+        	{% for hidden in form.hidden_fields %}
+            {{ hidden }}
+            {% endfor %}
+
+            <div class="row">
+                <div class="col-md-12">
+                    {{ form.position.errors }}
+                    <p>
+                        {{ form.position.label_tag }}<br />
+                        {{ form.position }}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.name.errors }}
+                    <p>
+                        {{ form.name.label_tag }}<br />
+                        {{ form.name }}
+                    </p>
+                    {{ form.city.errors }}
+                    <p>
+                        {{ form.city.label_tag }}<br />
+                        {{ form.city }}
+                    </p>
+                    {{ form.is_public.errors }}
+                    <p>
+                        {{ form.is_public.label_tag }}<br />
+                        {{ form.is_public }}
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    
+                    {{ form.description.errors }}
+                    <p>
+                        {{ form.description.label_tag }}<br />
+                        {{ form.description }}
+                    </p>
+                </div>
+            </div>
+            
+            {% comment %}
+        	{% for field in form.visible_fields %}
+        	{{ field.errors }}
+                <p>
+                	{{ field.label_tag }}<br />
+                    {{ field }}
+                </p>
+            {% endfor %}
+            {% endcomment %}
+        	<p class="no-border">
+            <input class="button" type="submit" value="Ajouter" tabindex="5" />
+            <input class="button" type="reset" value="Remise à zéro" tabindex="6" />
+        	</p>
+
+        </form>
+    </div>
+    <div class="col-md-3">
+      
+        <ul class="list-group navlist">
+      {% include "places/partials/menu.html" %}
+    </ul>
+
+        <hr />
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, autem, atque, voluptatem amet obcaecati aut nisi dicta excepturi repellendus perspiciatis distinctio ratione non ducimus? Sunt, perferendis harum dolor dolore fugit?  
+
+    </div>
+</div>
+{% endblock content %}

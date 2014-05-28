@@ -7,16 +7,25 @@ from django.views.generic.edit import CreateView
 
 from django.template.defaultfilters import slugify
 
-from .models import Place
+from .models import Place, Category
 from .forms import AddPlaceForm
 
 
 class PlaceListView(ListView):
+    """
+    List all the public places
+    """
     def get_queryset(self):
-        return Place.objects.public()
+        qs = Place.objects.public()
+        if 'category_slug' in self.kwargs:
+            qs = qs.filter(category=get_object_or_404(Category, slug=self.kwargs['category_slug']))
+        return qs
 
 
 class UserPlaceListView(ListView):
+    """
+    List the places for a given user.
+    """
     def get_queryset(self):
         username = self.kwargs.get('username')
         user = get_object_or_404(User, username=username)

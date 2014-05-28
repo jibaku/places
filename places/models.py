@@ -9,10 +9,21 @@ from django.conf import settings
 
 from .managers import PlaceManager
 
+class Category(models.Model):
+    #site = models.ForeignKey(Site, default=settings.SITE_ID)
+    name = models.CharField(_("Name"), max_length=200)
+    slug = models.SlugField(_("Slug"))
+    # private_icon
+    # public_icon
+
+    def __unicode__(self):
+        return self.name
+
 
 class Place(models.Model):
     site = models.ForeignKey(Site, default=settings.SITE_ID)
     user = models.ForeignKey(User)
+    category = models.ForeignKey(Category)
     name = models.CharField(_("Name"), max_length=200)
     slug = models.SlugField(_("Slug"))
 
@@ -31,6 +42,8 @@ class Place(models.Model):
     updated_on = models.DateTimeField(editable=False)
 
     objects = PlaceManager()
+
+    # place / people / club / boutique
 
     class Meta:
         unique_together = (

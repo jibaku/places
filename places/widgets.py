@@ -1,5 +1,7 @@
 #! -*- encoding: utf-8 -*-
 from django import forms
+from django.contrib.gis import forms as forms_gis
+
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.contrib.gis.geos import Point
@@ -12,7 +14,7 @@ MAXIMIZED_MAPS_HEIGHT = 600
 MAXIMIZED_MAPS_WIDTH = 800
 
 
-class GoogleMapPointWidget(forms.widgets.Widget):
+class GoogleMapPointWidget(forms_gis.BaseGeometryWidget):
     class Media:
         js = (
             'http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js',

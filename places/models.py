@@ -30,7 +30,7 @@ class Place(models.Model):
     longitude = models.FloatField(_("Longitude"), blank=True, editable=False)
     latitude = models.FloatField(_("Latitude"), blank=True, editable=False)
     position = models.PointField(_("Position"), srid=4326, blank=True, null=True)
-    is_public = models.BooleanField(_("Is public?"), db_index=True)
+    is_public = models.BooleanField(_("Is public?"), db_index=True, default=False)
 
     street = models.CharField(_("Street"), blank=True, max_length=250)
     postal_code = models.CharField(_("Postal code"), blank=True, max_length=25)

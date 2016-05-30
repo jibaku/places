@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="places",
-    version="0.1.1",
+    version="0.1.2",
     author="Fabien Schwob",
     author_email="fabien@x-phuture.com",
     description = ("Django project to handle places"),

@@ -1,18 +1,17 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 setup(
     name="places",
-    version="0.1.2",
+    version="0.1.3",
     author="Fabien Schwob",
     author_email="fabien@x-phuture.com",
-    description = ("Django project to handle places"),
+    description="Django project to handle places",
     license="BSD",
     url="https://github.com/jibaku/places",
-    packages=[
-        "places",
-    ],
+    packages=find_packages(exclude=[]),
+    include_package_data=True,
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",

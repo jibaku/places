@@ -38,7 +38,7 @@ def places_filter(parser, token):
             raise_error = True
 
     if raise_error:
-        raise template.TemplateSyntaxError, "%r tag must be used with %s" % (tokens[0], "{% categories as categories %}")
+        raise template.TemplateSyntaxError, "{0!r} tag must be used with {1!s}".format(tokens[0], "{% categories as categories %}")
     else:
         return PlacesNode(var_name, filters)
 

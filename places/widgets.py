@@ -57,14 +57,14 @@ class GoogleMapPointWidget(forms_gis.BaseGeometryWidget):
 
         javascript = render_to_string('places/javascript/point_gmap.js', context)
 
-        html = self.hidden_input.render("%s" % name, None, dict(id='id_%s' % name))
+        html = self.hidden_input.render("{0!s}".format(name), None, dict(id='id_{0!s}'.format(name)))
         if self.config['allow_bigger']:
-            html += "<button id='min_%s'>-</button>" % name
-            html += "<button id='max_%s'>+</button><br/>" % name
+            html += "<button id='min_{0!s}'>-</button>".format(name)
+            html += "<button id='max_{0!s}'>+</button><br/>".format(name)
         map_options = {
             'name': name,
             'min_width': self.config['min_width'],
             'min_height': self.config['min_height'],
         }
-        html += "<div id=\"map_%(name)s\" style=\"width: %(min_width)spx; height: %(min_height)spx\"></div>" % map_options
+        html += "<div id=\"map_{name!s}\" style=\"width: {min_width!s}px; height: {min_height!s}px\"></div>".format(**map_options)
         return mark_safe(javascript+html)

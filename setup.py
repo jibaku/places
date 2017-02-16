@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import os
 
 package = "places"
-version = __import__('"places"').get_version().replace(' ', '-')
+version = __import__("places").get_version().replace(' ', '-')
 
 
 def read_file(filename):

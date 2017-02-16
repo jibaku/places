@@ -1,14 +1,14 @@
-from django.shortcuts import get_object_or_404
+"""Views for places app."""
+from django.conf import settings
 from django.contrib.auth.models import User
-
+from django.shortcuts import get_object_or_404
+from django.template.defaultfilters import slugify
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 
-from django.template.defaultfilters import slugify
-
-from .models import Place, Category
 from .forms import AddPlaceForm
+from .models import Category, Place
 
 
 class PlaceListView(ListView):
@@ -53,10 +53,15 @@ class PlaceDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(PlaceDetailView, self).get_context_data(**kwargs)
-        if self.request.user.is_authenticated():
-            nearby = Place.objects.for_user(self.request.user).distance(self.object.position).exclude(id=self.object.id)[:5]
-        else:
-            nearby = Place.objects.public().distance(self.object.position).exclude(id=self.object.id)[:5]
+        nearby_items = getattr(settings, 'PLACES_RELATED_COUNT', 5)
+        try:
+            # TODO: put as place method
+            if self.request.user.is_authenticated():
+                nearby = Place.objects.for_user(self.request.user).distance(self.object.position).exclude(id=self.object.id)[:nearby_items]
+            else:
+                nearby = Place.objects.public().distance(self.object.position).exclude(id=self.object.id)[:nearby_items]
+        except ValueError:
+            nearby = Place.objects.public().order_by('?')[:nearby_items]
         context['nearby'] = nearby
         return context
         

@@ -1,25 +1,33 @@
 # -*- coding: utf-8 -*-
 import datetime
 
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.contrib.sites.models import Site
-from django.contrib.auth.models import User
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
 
-from .managers import PlaceManager
+from places.managers import PlaceManager
 
+
+@python_2_unicode_compatible
 class Category(models.Model):
-    #site = models.ForeignKey(Site, default=settings.SITE_ID)
+    # site = models.ForeignKey(Site, default=settings.SITE_ID)
     name = models.CharField(_("Name"), max_length=200)
     slug = models.SlugField(_("Slug"))
     # private_icon
     # public_icon
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('places-category', [self.slug])
 
+
+@python_2_unicode_compatible
 class Place(models.Model):
     site = models.ForeignKey(Site, default=settings.SITE_ID)
     user = models.ForeignKey(User)
@@ -49,20 +57,18 @@ class Place(models.Model):
         unique_together = (
             ('site', 'slug')
         )
-        verbose_name = _('Place')
-        verbose_name_plural = _('Places')
+        verbose_name = _('place')
+        verbose_name_plural = _('places')
 
     @models.permalink
     def get_absolute_url(self):
         return ('places-detail', [self.slug])
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
-        """
-        Updating latitude/longitude when position is updated
-        """
+        """Updating latitude/longitude when position is updated."""
         if self.position:
             self.latitude = self.position.x
             self.longitude = self.position.y

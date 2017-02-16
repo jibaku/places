@@ -38,13 +38,15 @@ def places_filter(parser, token):
             raise_error = True
 
     if raise_error:
-        raise template.TemplateSyntaxError, "{0!r} tag must be used with {1!s}".format(tokens[0], "{% categories as categories %}")
+        msg = "{0!r} tag must be used with {1!s}".format(tokens[0], "{% categories as categories %}")
+        raise template.TemplateSyntaxError(msg)
     else:
         return PlacesNode(var_name, filters)
 
 
 @register.inclusion_tag('places/inclusion_tag/staticmap.html')
-def staticmap(latitude, longitude, html_size="200x500"):
+def staticmap(latitude, longitude, html_size="200x500", alt=None):
+    """Return a static map."""
     try:
         height, width = html_size.split("x")
         height, width = int(height), int(width)
@@ -58,6 +60,7 @@ def staticmap(latitude, longitude, html_size="200x500"):
         'long': longitude,
         'height': height,
         'width': width,
+        'alt': alt,
     }
 
 

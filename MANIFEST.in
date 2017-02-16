@@ -1,0 +1,2 @@
+recursive-include places/templates *
+recursive-include places/locale *

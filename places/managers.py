@@ -1,6 +1,11 @@
+# -*- coding: utf-8 -*-
+"""Managers for the app models."""
+
+from __future__ import unicode_literals
+
+from django.conf import settings
 from django.contrib.gis.db import models
 from django.db.models import Q
-from django.conf import settings
 
 
 class PlaceManager(models.GeoManager):
@@ -11,8 +16,10 @@ class PlaceManager(models.GeoManager):
 
     def public(self, site_id=None):
         """
-        Return the public places (by default for the current website, or for
-        the site whose ID is passed as *site_id* parameter)
+        Return the public places.
+
+        By default for the current website, or for the site whose ID is passed
+        as *site_id* parameter.
         """
         queryset = self.for_site(site_id)
         queryset = queryset.filter(is_public=True)

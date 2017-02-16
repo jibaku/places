@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
 """Views for places app."""
+from __future__ import unicode_literals
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
@@ -7,14 +10,13 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 
-from .forms import AddPlaceForm
-from .models import Category, Place
+from places.forms import AddPlaceForm
+from places.models import Category, Place
 
 
 class PlaceListView(ListView):
-    """
-    List all the public places
-    """
+    """List all the public places."""
+
     def get_queryset(self):
         qs = Place.objects.public()
         if 'category_slug' in self.kwargs:
@@ -23,9 +25,8 @@ class PlaceListView(ListView):
 
 
 class UserPlaceListView(ListView):
-    """
-    List the places for a given user.
-    """
+    """List the places for a given user."""
+
     def get_queryset(self):
         username = self.kwargs.get('username')
         user = get_object_or_404(User, username=username)
@@ -64,7 +65,7 @@ class PlaceDetailView(DetailView):
             nearby = Place.objects.public().order_by('?')[:nearby_items]
         context['nearby'] = nearby
         return context
-        
+
 
 class PlaceAddView(CreateView):
     template_name = 'places/place_form.html'

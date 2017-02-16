@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
+"""Definition of places app urls."""
+from __future__ import unicode_literals
+
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
-from .views import (PlaceAddView, PlaceDetailView, PlaceListView,
-                    UserPlaceListView)
+from places.views import (PlaceAddView, PlaceDetailView, PlaceListView,
+                          UserPlaceListView)
 
 urlpatterns = [
     url(r'^$', PlaceListView.as_view(), name='places-index'),

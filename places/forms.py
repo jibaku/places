@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
+"""Places app forms."""
 from django import forms
 from django.template.defaultfilters import slugify
 
-from .models import Place
+from places.models import Place
 
 
 class AddPlaceForm(forms.ModelForm):

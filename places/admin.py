@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+"""Places admin."""
 from __future__ import unicode_literals
 
 from django.contrib.gis import admin

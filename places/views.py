@@ -23,6 +23,13 @@ class PlaceListView(ListView):
             qs = qs.filter(category=get_object_or_404(Category, slug=self.kwargs['category_slug']))
         return qs
 
+    def get_context_data(self, **kwargs):
+        context = super(PlaceListView, self).get_context_data(**kwargs)
+        context['current_category'] = None
+        if 'category_slug' in self.kwargs:
+            context['current_category'] = get_object_or_404(Category,
+                                                            slug=self.kwargs['category_slug'])
+        return context
 
 class UserPlaceListView(ListView):
     """List the places for a given user."""

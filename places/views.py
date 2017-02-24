@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.gis.db.models import Collect
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
 from django.views.generic import ListView
@@ -45,7 +46,7 @@ class UserPlaceListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(UserPlaceListView, self).get_context_data(**kwargs)
-        context['center'] = self.get_queryset().collect().centroid
+        context['center'] = self.get_queryset().aggregate(position_center=Collect('position'))['position_center'].centroid
         return context
 
 

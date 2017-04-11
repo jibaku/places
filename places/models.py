@@ -47,6 +47,7 @@ class Place(models.Model):
     city = models.CharField(_("City"), blank=True, max_length=100)
 
     description = models.TextField(_("Description"), blank=True)
+    main_picture = models.ImageField(upload_to='places/main_picture/', blank=True, null=True)
 
     added_on = models.DateTimeField(default=datetime.datetime.now, editable=False)
     updated_on = models.DateTimeField(editable=False)
@@ -76,3 +77,20 @@ class Place(models.Model):
             self.longitude = self.position.y
         self.updated_on = datetime.datetime.now()
         super(Place, self).save(*args, **kwargs)
+
+
+class PlaceLink(models.Model):
+    WEBSITE = 'website'
+    FACEBOOK = 'facebook'
+    TWITTER = 'twitter'
+    INSTAGRAM = 'instagram'
+
+    LINK_TYPES = (
+        (WEBSITE, 'Website'),
+        (FACEBOOK, 'Facebook'),
+        (TWITTER, 'Twitter'),
+        (INSTAGRAM, 'Instagram'),
+    )
+    place = models.ForeignKey(Place)
+    url = models.URLField()
+    link_type = models.CharField(choices=LINK_TYPES, default=WEBSITE, max_length=20)

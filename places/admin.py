@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 
 from django.contrib.gis import admin
 from django.utils.translation import ugettext_lazy as _
-from places.models import Category, Place
+
+from places.models import Category, Place, PlaceLink
 
 
 class PlaceAdmin(admin.OSMGeoAdmin):
@@ -30,3 +31,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Place, PlaceAdmin)
 admin.site.register(Category, CategoryAdmin)
+
+
+@admin.register(PlaceLink)
+class PlaceLinkAdmin(admin.ModelAdmin):
+    list_display = ('place', 'url', 'link_type')
+    list_filter = ('link_type',)

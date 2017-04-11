@@ -33,7 +33,8 @@ def staticmap(latitude, longitude, html_size="200x500", alt=None):
         'zoom': "17",
         'maptype': "hybrid",
         'size': '{width}x{height}'.format(width=width, height=height),
-        'sensor': 'false'
+        'sensor': 'false',
+        # 'markers':'size:big|color:blue|{latitude:f},{longitude:f}'.format(latitude=latitude, longitude=longitude),
     }
     if key is not None:
         params['key'] = key

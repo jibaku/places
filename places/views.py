@@ -32,6 +32,7 @@ class PlaceListView(ListView):
                                                             slug=self.kwargs['category_slug'])
         return context
 
+
 class UserPlaceListView(ListView):
     """List the places for a given user."""
 

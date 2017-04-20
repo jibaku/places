@@ -5,13 +5,14 @@ from __future__ import unicode_literals
 from django import template
 from django.conf import settings
 
-from places.models import Place
+from places.models import Place, Category
 from places.utils import sign_googleapi_url
 
 try:
     from urllib.parse import urlencode
 except ImportError:
     from urllib import urlencode
+
 
 register = template.Library()
 
@@ -57,3 +58,26 @@ def staticmap(latitude, longitude, html_size="200x500", alt=None):
 def user_places_count(user):
     """Count the number of places for a given user."""
     return Place.objects.filter(user=user).count()
+
+
+class CategoriesNode(template.Node):
+    def __init__(self, var_name):
+        self.var_name = var_name
+
+    def render(self, context):
+        context[self.var_name] = Category.objects.all().order_by('name')
+        return ''
+
+
+@register.tag(name="places_categories")
+def categories(parser, token):
+    """
+    Add the categories queryset in the context with the given name.
+
+    {% places_categories as categories %}
+    """
+    tokens = token.split_contents()
+    if len(tokens) is not 3 and token[0] == 'places_categories' and token[1] == 'as':
+        raise template.TemplateSyntaxError("%r tag must be used with %s" % (tokens[0], r"{% places_categories as categories %}"))
+    var_name = tokens[2]
+    return CategoriesNode(var_name)

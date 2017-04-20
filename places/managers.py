@@ -6,9 +6,31 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.contrib.gis.db import models
 from django.db.models import Q
+from django.contrib.gis.db.models.query import GeoQuerySet
+
+
+class PlaceQuerySet(GeoQuerySet):
+    def published(self):
+        return self.filter(status=self.model.PUBLISHED)
+
+    def draft(self):
+        return self.filter(status=self.model.DRAFT)
+
+    def deleted(self):
+        return self.filter(status=self.model.DELETED)
+
+    def public(self):
+        return self.filter(is_public=True)
+
+    def for_user(self, user):
+        filters = Q(is_public=True) | Q(is_public=False, user=user)
+        return self.filter(filters)
 
 
 class PlaceManager(models.GeoManager):
+    def get_queryset(self):
+        return PlaceQuerySet(self.model, using=self._db)
+
     def for_site(self, site_id=None):
         if site_id is None:
             site_id = settings.SITE_ID
@@ -21,15 +43,10 @@ class PlaceManager(models.GeoManager):
         By default for the current website, or for the site whose ID is passed
         as *site_id* parameter.
         """
-        queryset = self.for_site(site_id)
-        queryset = queryset.filter(is_public=True)
-        return queryset
+        return self.for_site(site_id).public()
 
     def for_user(self, user, site_id=None):
-        filters = Q(is_public=True) | Q(is_public=False, user=user)
-        queryset = self.for_site(site_id)
-        queryset = queryset.filter(filters)
-        return queryset
+        return self.for_site(site_id).for_user(user)
 
     def user_public_places(self, user, site_id=None):
-        return self.for_site(site_id).filter(is_public=True, user=user)
+        return self.for_site(site_id).public().for_user(user=user)

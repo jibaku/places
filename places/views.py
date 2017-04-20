@@ -18,18 +18,31 @@ from places.models import Category, Place
 class PlaceListView(ListView):
     """List all the public places."""
 
+    category_slug = None
+
+    def get_category_slug(self):
+        if self.category_slug is not None:
+            return self.category_slug
+        else:
+            return self.kwargs.get('category_slug')
+
+    @property
+    def category(self):
+        print(self.get_category_slug())
+        if self.get_category_slug() is not None:
+            return get_object_or_404(Category, slug=self.get_category_slug())
+        return None
+
     def get_queryset(self):
-        qs = Place.objects.public()
-        if 'category_slug' in self.kwargs:
-            qs = qs.filter(category=get_object_or_404(Category, slug=self.kwargs['category_slug']))
+        qs = Place.objects.public().published()
+        category = self.category
+        if category is not None:
+            qs = qs.filter(category=category)
         return qs
 
     def get_context_data(self, **kwargs):
         context = super(PlaceListView, self).get_context_data(**kwargs)
-        context['current_category'] = None
-        if 'category_slug' in self.kwargs:
-            context['current_category'] = get_object_or_404(Category,
-                                                            slug=self.kwargs['category_slug'])
+        context['current_category'] = self.category
         return context
 
 
@@ -67,12 +80,21 @@ class PlaceDetailView(DetailView):
         try:
             # TODO: put as place method
             if self.request.user.is_authenticated():
-                nearby = Place.objects.for_user(self.request.user).distance(self.object.position).exclude(id=self.object.id)[:nearby_items]
+                nearby = Place.objects.for_user(self.request.user).distance(self.object.position).exclude(id=self.object.id)
             else:
-                nearby = Place.objects.public().distance(self.object.position).exclude(id=self.object.id)[:nearby_items]
+                nearby = Place.objects.public().distance(self.object.position).exclude(id=self.object.id)
+            nearby = nearby.order_by('distance')
+            nearby = nearby[:nearby_items]
         except ValueError:
             nearby = Place.objects.public().order_by('?')[:nearby_items]
         context['nearby'] = nearby
+        from django.core.serializers import serialize
+        json = serialize('geojson',
+                         Place.objects.filter(id__in=[self.object.id]),
+                         geometry_field='position',
+                         fields=('name',),
+                         indent=4)
+        context['geojson'] = json
         return context
 
 

@@ -30,7 +30,7 @@ class Category(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('places-category', [self.slug])
-    
+
     @property
     def published_places_count(self):
         return self.places.all().published().count()
@@ -98,6 +98,7 @@ class Place(models.Model):
         super(Place, self).save(*args, **kwargs)
 
 
+@python_2_unicode_compatible
 class PlaceLink(models.Model):
     """Associated link for a place.
 

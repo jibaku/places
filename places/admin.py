@@ -8,6 +8,10 @@ from django.utils.translation import ugettext_lazy as _
 from places.models import Category, Place, PlaceLink
 
 
+class PlaceLinkInline(admin.TabularInline):
+    model = PlaceLink
+
+
 class PlaceAdmin(admin.OSMGeoAdmin):
     list_display = ('name', 'category', 'user', 'city',
                     'added_on', 'updated_on', 'status', 'is_public')
@@ -19,6 +23,7 @@ class PlaceAdmin(admin.OSMGeoAdmin):
         'mark_as_public', 'mark_as_private',
         'mark_as_draft', 'mark_as_published', 'mark_as_deleted'
     ]
+    inlines = [PlaceLinkInline]
 
     def mark_as_public(self, request, queryset):
         queryset.update(is_public=True)

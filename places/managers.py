@@ -4,12 +4,11 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
-from django.contrib.gis.db import models
+from django.db import models
 from django.db.models import Q
-from django.contrib.gis.db.models.query import GeoQuerySet
 
 
-class PlaceQuerySet(GeoQuerySet):
+class PlaceQuerySet(models.QuerySet):
     def published(self):
         return self.filter(status=self.model.PUBLISHED)
 
@@ -27,7 +26,7 @@ class PlaceQuerySet(GeoQuerySet):
         return self.filter(filters)
 
 
-class PlaceManager(models.GeoManager):
+class PlaceManager(models.Manager):
     def get_queryset(self):
         return PlaceQuerySet(self.model, using=self._db)
 

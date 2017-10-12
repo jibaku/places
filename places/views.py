@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.gis.db.models import Collect
+from django.contrib.gis.db.models.functions import Distance
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import slugify
 from django.views.generic import ListView
@@ -68,7 +69,7 @@ class PlaceDetailView(DetailView):
     slug_field = 'slug'
 
     def get_queryset(self):
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             queryset = Place.objects.for_user(self.request.user)
         else:
             queryset = Place.objects.public()
@@ -79,10 +80,12 @@ class PlaceDetailView(DetailView):
         nearby_items = getattr(settings, 'PLACES_RELATED_COUNT', 5)
         try:
             # TODO: put as place method
-            if self.request.user.is_authenticated():
-                nearby = Place.objects.for_user(self.request.user).distance(self.object.position).exclude(id=self.object.id)
+            if self.request.user.is_authenticated:
+                nearby = Place.objects.for_user(self.request.user)
             else:
-                nearby = Place.objects.public().distance(self.object.position).exclude(id=self.object.id)
+                nearby = Place.objects.public()
+            nearby = nearby.annotate(distance=Distance('position', self.object.position))
+            nearby = nearby.exclude(id=self.object.id)
             nearby = nearby.order_by('distance')
             nearby = nearby[:nearby_items]
         except ValueError:

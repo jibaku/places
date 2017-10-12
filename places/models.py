@@ -29,7 +29,7 @@ class Category(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('places-category', [self.slug])
+        return ('places:places-category', [self.slug])
 
     @property
     def published_places_count(self):
@@ -47,9 +47,13 @@ class Place(models.Model):
         (PUBLISHED, _('published')),
         (DELETED, _('deleted')),
     )
-    site = models.ForeignKey(Site, default=settings.SITE_ID)
-    user = models.ForeignKey(User)
-    category = models.ForeignKey(Category, related_name='places')
+    site = models.ForeignKey(Site,
+                             default=settings.SITE_ID,
+                             on_delete=models.CASCADE)
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, related_name='places',
+                                 on_delete=models.CASCADE)
     name = models.CharField(_("Name"), max_length=200)
     slug = models.SlugField(_("Slug"), db_index=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=20, db_index=True,
@@ -83,7 +87,7 @@ class Place(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('places-detail', [self.slug])
+        return ('places:places-detail', [self.slug])
 
     def __str__(self):
         """Human readable place name."""
@@ -118,7 +122,7 @@ class PlaceLink(models.Model):
         (INSTAGRAM, 'Instagram'),
         (PINTEREST, 'Pinterest'),
     )
-    place = models.ForeignKey(Place)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
     url = models.URLField()
     link_type = models.CharField(choices=LINK_TYPES, default=WEBSITE, max_length=20)
 

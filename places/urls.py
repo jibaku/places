@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from places.views import (PlaceAddView, PlaceDetailView, PlaceListView,
                           UserPlaceListView)
 
+app_name = 'places'
 urlpatterns = [
     url(r'^$', PlaceListView.as_view(), name='places-index'),
     url(r'^add/$', login_required(PlaceAddView.as_view()), name='places-new'),

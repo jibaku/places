@@ -11,6 +11,7 @@ from django.contrib.postgres.fields import JSONField
 from django.contrib.sites.models import Site
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse
 
 from places.managers import PlaceManager
 
@@ -27,9 +28,8 @@ class Category(models.Model):
         """Category human readable name."""
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('places:places-category', [self.slug])
+        return reverse('places:places-category', args=[self.slug])
 
     @property
     def published_places_count(self):
@@ -85,9 +85,8 @@ class Place(models.Model):
         verbose_name = _('place')
         verbose_name_plural = _('places')
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('places:places-detail', [self.slug])
+        return reverse('places:places-detail', args=[self.slug])
 
     def __str__(self):
         """Human readable place name."""
